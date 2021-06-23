@@ -60,7 +60,7 @@
 		
 		.timer-text-elapsed{
 			font-weight: bold;
-			color: red;
+			color: white;
 		}
 		
 		.timer-text{
@@ -254,6 +254,7 @@
 			}
 			$this.html(event.strftime('<span class="timer-text-elapsed timer-size">-%H:%M:%S</span>'));
 			endBeeps.play();
+			$('body').css("background-color", "red");
 		  } else {
 			$this.html(event.strftime('<span class="timer-text timer-size">%H:%M:%S</span>'));
 		  }
@@ -266,6 +267,7 @@
 	
 	function startPreparation(){
 		
+		$('body').css("background-color", "white");
 		$('#clock').hide();
 		$('#clock-prep').show();
 		
@@ -284,7 +286,7 @@
 		
 			var $this = $(this);
 			$this.html(event.strftime('<span class="timer-text timer-size">%H:%M:%S</span>'));
-			
+			$('body').css("background-color", "yellow");
 			isPreparing = false;
 			startCountdown();
 		})
