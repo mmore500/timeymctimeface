@@ -1,0 +1,479 @@
+<html lang="en"><head>
+  <title>Fullscreen Timer - Large online timer with countdown for exercise, meeting, meditation, ... </title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  
+  <script async="" src="https://www.google-analytics.com/analytics.js"></script><script async="" src="https://www.google-analytics.com/analytics.js"></script><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/buzz/1.2.0/buzz.min.js"></script>
+  <script src="countdown/jquery.countdown.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+  
+  <style>
+  
+		
+		.container{
+        width: 100%;
+		}
+		
+		/* Medium Devices, Desktops */
+		@media only screen and (max-width : 992px) {
+			.timer-size{
+				font-size: 20vw;
+			}
+			
+			.total-size{
+				font-size: 8vw;
+			}
+		}
+		
+		/* Medium Devices, Desktops */
+		@media only screen and (min-width : 992px) {
+			.timer-size{
+				font-size: 13vw;
+			}
+			
+			.total-size{
+				font-size: 5vw;
+			}
+		}
+		
+		.fill { 
+			min-height: 80%;
+			height: 80%;
+		}
+		
+		.side{
+			/*background-color: lightgrey;*/
+			align-content: center;
+			text-align: center;
+			/*height: 1000px;*/
+		}
+		
+		.timer-text-prep{
+			font-weight: bold;
+			color: green;
+		}
+		
+		.timer-text-elapsed{
+			font-weight: bold;
+			color: red;
+		}
+		
+		.timer-text{
+			font-weight: bold;
+			color: black;
+		}
+		
+		.clock-prep-div{
+			display: none;
+		}
+		
+      
+		.middle{
+			/*background-color: lightblue;*/
+			align-content: center;
+			text-align: center;
+			margin: 0 auto;
+			/*padding-top: 100px;*/
+		}
+		
+        .middle-top{
+            height: 100px;
+            align-content: center;
+			text-align: center;
+            padding-top: 20px;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin-bottom: -40px;
+        }
+      
+		.middle-after-clock{
+			max-width: 600px;
+			margin-left: auto;
+			margin-right: auto;
+		}
+		
+		.container-fix{
+			margin: 0px;
+		}
+		
+		.text-box{
+			padding-top: 80px;
+		}
+		
+		.buttons{
+			padding: 20px;
+		}
+      
+      .ui-widget button{                
+        font-size: 14px !important;          
+        }
+		
+	</style>
+	<meta name="description" content="Fullscreen timer - large online timer with countdown. Use for exercise, meetings, meditation, ...">
+	<meta name="robots" content="noodp">
+	<link rel="canonical" href="https://fullscreentimer.com/">
+	<meta property="og:locale" content="en_US">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Fullscreen Timer">
+	<meta property="og:description" content="Fullscreen timer - large online timer with countdown. Use for exercise, meetings, meditation, ...">
+	<meta property="og:url" content="http://fullscreentimer.com/">
+	<meta property="og:site_name" content="Fullscreen Timer">
+	<!--<meta property="og:image" content="" />-->
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:description" content="Fullscreen timer - large online timer with countdown. Use for exercise, meetings, meditation, ...">
+</head>
+<body>
+  
+<div class="container">
+  <div class="row">
+    <div class="col-md-2 side">
+     
+    </div>
+	
+    <div class="col-md-8 fill middle row">
+        <div class="middle-top center-block" id="branding"></div>
+            
+        <div class="row" id="clock">
+			<span class="timer-text timer-size">00:00:00</span>
+		</div>
+		<div class="row clock-prep-div" id="clock-prep">
+			<span class="timer-text-prep timer-size">00:00:00</span>
+		</div>
+		<div class="row">
+			<span class="total-size"> / </span><span class="total-size" id="total-time">00:00:00</span>
+		</div>
+	  
+	  <div class="middle-after-clock center-block ui-accordion ui-widget ui-helper-reset" id="controls" role="tablist">
+		<h3 class="ui-accordion-header ui-corner-top ui-state-default ui-accordion-header-active ui-state-active ui-accordion-icons" role="tab" id="ui-id-1" aria-controls="ui-id-2" aria-selected="true" aria-expanded="true" tabindex="0"><span class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-s"></span>Settings</h3>
+		<div class="ui-accordion-content ui-corner-bottom ui-helper-reset ui-widget-content ui-accordion-content-active" id="ui-id-2" aria-labelledby="ui-id-1" role="tabpanel" aria-hidden="false" style="height: 320px;">
+		<div class="row">
+			<h4>Countdown time</h4>
+			 <div class="form-group col-xs-4" id="input-hour-div">
+			  <label for="input-hour">H:</label>
+			  <input type="number" class="form-control col-xs-6" id="input-hour" min="0" step="1" value="0">
+			</div>
+			<div class="form-group col-xs-4" id="input-minute-div">
+			  <label for="input-minute">M:</label>
+			  <input type="number" class="form-control" id="input-minute" min="0" step="1" value="0">
+			</div>
+			<div class="form-group col-xs-4" id="input-second-div">
+			  <label for="input-second">S:</label>
+			  <input type="number" class="form-control" id="input-second" min="0" step="1" value="0">
+			</div>
+		</div>
+		<div class="row">
+			<h4>Preparation time</h4>
+			 <div class="form-group col-xs-4" id="input-hour-div-prep">
+			  <label for="input-hour-prep">H:</label>
+			  <input type="number" class="form-control col-xs-6" id="input-hour-prep" min="0" step="1" value="0">
+			</div>
+			<div class="form-group col-xs-4" id="input-minute-div-prep">
+			  <label for="input-minute-prep">M:</label>
+			  <input type="number" class="form-control" id="input-minute-prep" min="0" step="1" value="0">
+			</div>
+			<div class="form-group col-xs-4" id="input-second-div-prep">
+			  <label for="input-second-prep">S:</label>
+			  <input type="number" class="form-control" id="input-second-prep" min="0" step="1" value="0">
+			</div>
+		</div>
+            <div class="row">
+			 <h5>Your logo URL(visible on the top)</h5>
+                <div class="input-group">
+                  <input type="text" class="form-control" id="input-branding-url">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" onclick="setLogo()" type="button">Set</button>
+                  </span>
+                </div>
+            </div>
+		</div>
+	  </div>
+	  
+	  <div class="row buttons">
+		<button type="button" class="btn btn-primary" id="btn-reset">
+		<i class="glyphicon glyphicon-repeat"></i>
+		Restart timer
+		</button>
+	
+	
+
+		<div class="btn-group" data-toggle="buttons">
+		  <label class="btn btn-default" id="btn-pause">
+			<input type="radio" name="options" id="option2" autocomplete="off">
+			<i class="glyphicon glyphicon-pause"></i>
+			Pause
+		</label>
+
+		  <label class="btn btn-default active" id="btn-resume">
+			<input type="radio" name="options" id="option2" autocomplete="off" checked="">
+			<i class="glyphicon glyphicon-play"></i>
+			Resume
+		  </label>
+	  
+		</div>
+	 
+    </div>
+	
+	  </div>
+	  
+	
+	</div>
+	
+    <div class="col-md-2 side"> 
+      
+    </div>
+  </div>
+	<audio id="timer-audio">
+		<source src="sound/beep-07.mp3" type="audio/mpeg">
+	</audio>
+
+
+<script type="text/javascript">
+	$( function() {
+		$( "#controls" ).accordion({
+		  collapsible: true
+		});
+        
+        var branding = Cookies.get('branding-url');
+        if(branding){
+            $('#input-branding-url').val(branding);
+            setLogo();
+        }
+	} );
+	
+	var beep = new buzz.sound("sound/beep-07.mp3")
+	var endBeeps = new buzz.sound("sound/beep-07.mp3")
+	var countdownTotalTime = 0;
+	var prepareTotalTime = 0;
+	
+	var isPreparing = false;
+	
+	function startCountdown(){
+		
+		var finished = false;
+		countdownTime = getCountdownTime()
+		
+		$('#clock-prep').hide();
+		$('#clock').show();
+		
+		countdownTotalTime = new Date().valueOf() + countdownTime;
+		
+		$('#clock').countdown(new Date(countdownTotalTime), {elapse: true, defer: true})
+		.on('update.countdown', function(event) {
+		  var $this = $(this);
+		  if (event.elapsed && countdownTime > 0) {
+			if(finished == false){
+				finished = true;
+				
+				
+				$('#controls').accordion('option', {active: 0});
+			}
+			$this.html(event.strftime('<span class="timer-text-elapsed timer-size">-%H:%M:%S</span>'));
+			endBeeps.play();
+		  } else {
+			$this.html(event.strftime('<span class="timer-text timer-size">%H:%M:%S</span>'));
+		  }
+		})
+		.on('finish.countdown', function(event){
+			
+		})
+		.countdown('start');
+	}
+	
+	function startPreparation(){
+		
+		$('#clock').hide();
+		$('#clock-prep').show();
+		
+		prepareTotalTime = new Date().valueOf() + getPreparationTime();
+		
+		$('#clock-prep').countdown(new Date(prepareTotalTime), {elapse: false, defer: true})
+		.on('update.countdown', function(event) {
+			var $this = $(this);
+			$this.html(event.strftime('<span class="timer-text-prep timer-size">%H:%M:%S</span>'));
+
+			if(event.offset.totalSeconds <= 5 && event.offset.totalSeconds > 0){
+				beep.play();
+			}
+		})
+		.on('finish.countdown', function(event){
+		
+			var $this = $(this);
+			$this.html(event.strftime('<span class="timer-text timer-size">%H:%M:%S</span>'));
+			
+			isPreparing = false;
+			startCountdown();
+		})
+		.countdown('start');
+		
+		isPreparing = true;
+	}
+	
+	function getCountdownTime() {
+		var totalSeconds = 0;
+		
+		totalSeconds += getNumber('input-hour')*60*60;
+		totalSeconds += getNumber('input-minute')*60;
+		totalSeconds += getNumber('input-second');
+		
+		return totalSeconds * 1000;
+	}
+	
+	function getPreparationTime() {
+		var totalSeconds = 0;
+		
+		totalSeconds += getNumber('input-hour-prep')*60*60;
+		totalSeconds += getNumber('input-minute-prep')*60;
+		totalSeconds += getNumber('input-second-prep');
+		
+		return totalSeconds * 1000;
+	}
+	
+	function isValid() {
+		
+		var ok = true;
+		
+		ok = validateField('input-hour', 'input-hour-div') && ok;
+		ok = validateField('input-minute', 'input-minute-div') && ok;
+		ok = validateField('input-second', 'input-second-div') && ok;
+		
+		ok = validateField('input-hour', 'input-hour-div') && ok;
+		ok = validateField('input-minute', 'input-minute-div') && ok;
+		ok = validateField('input-second', 'input-second-div') && ok;
+		
+		return ok;
+	}
+	
+	function validateField(fieldName, fieldContainer){
+		var ok = true;
+		if(isNaN(parseInt($('#'+fieldName).val(), 10)) && $('#'+fieldName).val()){
+			$('#'+fieldContainer).addClass("has-error has-feedback");
+			ok = false;
+		} else {
+			$('#'+fieldContainer).removeClass("has-error has-feedback");
+		}
+		
+		return ok;
+	}
+	
+	function getNumber(fieldName){
+		if($('#'+fieldName).val()){
+			return parseFloat($('#'+fieldName).val().replace(',','.'), 10);
+		}
+		
+		return 0;
+	}
+	
+	var pausedAt = 0;
+	
+	function getClock(){
+		if(isPreparing){
+			return $('#clock-prep');
+		}
+		
+		return $('#clock');
+	}
+	
+	function getTotalTime(){
+		if(isPreparing){
+			return prepareTotalTime;
+		}
+		
+		return countdownTotalTime;
+	}
+	
+	$('#btn-reset').click(function() {
+		
+		pausedAt = 0;
+		
+		if(isValid()){
+			
+			//$('#total-time').text(moment(getCountdownTime()/1000, "s").format("HH:mm:ss"));
+			scrollToTop();
+			
+			$('#controls').accordion('option', {active: false});
+			$('#total-time').text(hhmmss(getCountdownTime()/1000));
+			
+			if(getPreparationTime() > 0){
+				startPreparation();
+			} else{
+				startCountdown();
+			}
+		}
+	});
+	
+	function pad(num) {
+		return ("0"+num).slice(-2);
+	}
+	
+	function hhmmss(secs) {
+	  var minutes = Math.floor(secs / 60);
+	  secs = secs%60;
+	  var hours = Math.floor(minutes/60)
+	  minutes = minutes%60;
+	  return pad(hours)+":"+pad(minutes)+":"+pad(secs);
+	}
+
+	$('#btn-pause').click(function() {
+		if(pausedAt > 0){
+			return;
+		}
+		
+		var clock = getClock();
+		clock.countdown('pause');
+		pausedAt = new Date().valueOf();
+		
+	});
+
+	$('#btn-resume').click(function() {
+		if(pausedAt > 0){
+			var clock = getClock();
+			
+			var newTime = 0;
+			if(isPreparing){
+				prepareTotalTime += new Date().valueOf() - pausedAt;
+				newTime = prepareTotalTime;
+			} else{
+				countdownTotalTime += new Date().valueOf() - pausedAt;
+				newTime = countdownTotalTime;
+			}
+			
+			clock.countdown(new Date(newTime));
+			
+			clock.countdown('resume');
+			
+			pausedAt = 0;
+		}
+  }	);
+  
+  function scrollToTop(){
+	$("html, body").animate({
+            scrollTop: 0
+        }, 600);
+        return false;
+  }
+    
+  function setLogo(){
+      var brandingUrl = $('#input-branding-url').val();
+      if(brandingUrl && brandingUrl != ""){
+        $('#branding').css('background-image', 'url(' + $('#input-branding-url').val() + ')');
+        $('#branding').height(200);
+      
+        Cookies.set('branding-url', brandingUrl, { expires: 1000 });
+      } else {
+        Cookies.remove('branding-url');
+        $('#branding').css('background-image', 'none');
+        $('#branding').height(100);
+      }  
+  }
+
+ </script>
+  
+
+
+</body></html>
